@@ -116,11 +116,8 @@ int namedp_read(URLContext *h, unsigned char *buf, int size)
 	HANDLE hPipe = ctx->hPipe;
 	if(!hPipe)
 		return -1;
-	else if(ctx->pipeOwner && !ctx->pipeConnected)
-		ConnectNamedPipe(ctx->hPipe, NULL);
-
-	//if(namedp_data_available(h, buf, size, 5000) < 0)
-	//return -1;
+	else if(ctx->pipeOwner && !ctx->pipeConnected)	
+		ctx->pipeConnected = ConnectNamedPipe(ctx->hPipe, NULL);	
 
 	DWORD bytesRead = 0;
 	DWORD readErrors = 0;
@@ -137,7 +134,7 @@ int namedp_read(URLContext *h, unsigned char *buf, int size)
 		if(bytesRead == 0 && size > 0)
 		{
 			printf("Warning: failed to read bytes from the input stream. Pipe name: '%s'. Error #%d.\n", ctx->pipeName, ++readErrors);
-			Sleep(10);
+			Sleep(100);
 		}
 	}while(bytesRead == 0 && readErrors < 10);
 
@@ -154,7 +151,7 @@ int namedp_write(URLContext *h, const unsigned char *buf, int size)
 	if(!hPipe)
 		return -1;
 	else if(ctx->pipeOwner && !ctx->pipeConnected)
-		ConnectNamedPipe(ctx->hPipe, NULL);
+		ctx->pipeConnected = ConnectNamedPipe(ctx->hPipe, NULL);
 
 	DWORD bytesWritten = 0;
 	DWORD writeErrors = 0;
@@ -167,10 +164,10 @@ int namedp_write(URLContext *h, const unsigned char *buf, int size)
 			&bytesWritten,	//number of bytes written
 			NULL);			//not overlapped
 
-		if(bytesWritten == 0  && size > 0)
+		if(bytesWritten == 0 && size > 0)
 		{
 			printf("Warning: failed to write bytes to the output stream. Pipe name: '%s'. Error #%d.\n", ctx->pipeName, ++writeErrors);
-			Sleep(10);
+			Sleep(100);
 		}
 	}while(bytesWritten == 0 && writeErrors < 10);
 

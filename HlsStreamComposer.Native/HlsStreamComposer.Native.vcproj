@@ -61,6 +61,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				OutputFile="..\HlsStreamComposer\Lib\$(ProjectName).dll"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="&quot;..\ffmpeg\lib&quot;"
 				GenerateDebugInformation="true"
@@ -135,6 +136,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				OutputFile="..\HlsStreamComposer\Lib\$(ProjectName).dll"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="&quot;..\ffmpeg\lib&quot;"
 				GenerateDebugInformation="true"

@@ -10,5 +10,5 @@
 #define HLSSTREAMCOMPOSERNATIVE_API __declspec(dllimport)
 #endif
 
-HLSSTREAMCOMPOSERNATIVE_API int Initialize(void);
+HLSSTREAMCOMPOSERNATIVE_API int Initialize(const char* status_log_path, const char* error_log_path);
 

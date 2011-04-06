@@ -6,3 +6,11 @@ Debug/*
 HlsStreamComposer/obj/*
 HlsStreamComposer.ncb
 HlsStreamComposer.suo
+HlsStreamComposer/Lib/HlsStreamComposer.Native.exp
+HlsStreamComposer/Lib/HlsStreamComposer.Native.ilk
+HlsStreamComposer/Lib/HlsStreamComposer.Native.pdb
+HlsStreamComposer/Lib/HlsStreamComposer.Native.lib
+HlsStreamComposer/HlsStreamComposer.csproj.user
+HlsStreamComposer/bin/Debug/HlsStreamComposer.vshost.exe
+HlsStreamComposer/bin/*
+HlsStreamComposer/bin/Debug/HlsStreamComposer.vshost.exe
