@@ -11,4 +11,7 @@
 #endif
 
 HLSSTREAMCOMPOSERNATIVE_API int Initialize(const char* status_log_path, const char* error_log_path);
+HLSSTREAMCOMPOSERNATIVE_API int RunTranscoder(void* lpParameter, int len);
+HLSSTREAMCOMPOSERNATIVE_API int RunSegmenter(void* lpParameter, int len);
+HLSSTREAMCOMPOSERNATIVE_API int StopTranscoder();
 

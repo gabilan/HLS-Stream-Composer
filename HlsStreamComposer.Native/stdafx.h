@@ -7,7 +7,7 @@
 
 #include "targetver.h"
 
-#define WIN32_LEAN_AND_MEAN             // Exclude rarely-used stuff from Windows headers
+//#define WIN32_LEAN_AND_MEAN             // Exclude rarely-used stuff from Windows headers
 #include <stdio.h>
 #include <stdarg.h>
 #include <string.h>
@@ -17,13 +17,15 @@
 
 #if WIN32
 #include <windows.h>
+#include <shlwapi.h>
 
+#pragma comment(lib, "shlwapi.lib")
 #pragma comment(lib, "avcodec.lib")
 #pragma comment(lib, "avformat.lib")
 #pragma comment(lib, "avfilter.lib")
 #pragma comment(lib, "avutil.lib")
 #pragma comment(lib, "swscale.lib")
-#pragma comment(lib, "avcore.lib")
+//#pragma comment(lib, "avcore.lib")
 #endif
 
 #include <inttypes.h>
@@ -51,5 +53,5 @@ extern "C"{
 #include "libavutil/pixdesc.h"
 #include "libavutil/eval.h"
 #include "libavcodec/opt.h"
-#include "libavcore/avcore.h"
+//#include "libavcore/avcore.h"
 }

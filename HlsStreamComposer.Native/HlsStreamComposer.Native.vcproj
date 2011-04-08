@@ -207,6 +207,10 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
+				RelativePath=".\cmdutils.h"
+				>
+			</File>
+			<File
 				RelativePath=".\HlsStreamComposer.Native.h"
 				>
 			</File>
@@ -215,11 +219,23 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Segmenter.h"
+				>
+			</File>
+			<File
 				RelativePath=".\stdafx.h"
 				>
 			</File>
 			<File
 				RelativePath=".\targetver.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Transcoder.h"
+				>
+			</File>
+			<File
+				RelativePath=".\TranscoderStructs.h"
 				>
 			</File>
 		</Filter>

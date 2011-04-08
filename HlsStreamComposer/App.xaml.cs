@@ -13,7 +13,6 @@ namespace HlsStreamComposer
     /// </summary>
     public partial class App : Application
     {
-
         protected override void OnStartup(StartupEventArgs e)
         {
             if (e.Args == null || e.Args.Length == 0)

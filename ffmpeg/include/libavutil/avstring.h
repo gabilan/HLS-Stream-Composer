@@ -130,8 +130,4 @@ char *av_d2str(double d);
  */
 char *av_get_token(const char **buf, const char *term);
 
-
-//int strcasecmp(const void* left, const void *right);
-//int strncasecmp(const void* left, const void *right, int n);
-
 #endif /* AVUTIL_AVSTRING_H */
