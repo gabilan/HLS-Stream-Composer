@@ -39,18 +39,16 @@ HLSSTREAMCOMPOSERNATIVE_API int Initialize(const char* status_log_path, const ch
 HLSSTREAMCOMPOSERNATIVE_API int RunTranscoder(void* lpParameter, int len)
 {
 	auto_ptr<char> buffer(((char*)lpParameter));
-	int _argc = 0, _currentOffset = 0, _clientId = 0;
+	int _argc = 0, _currentOffset = 0;
 	char** _argv = NULL;	
-
-	_clientId = (unsigned char)buffer.get()[0];
-	_argc = buffer.get()[1];
+		
+	_argc = buffer.get()[0];
 	_argv = new char*[_argc];
-	_currentOffset = 2 + _argc;
+	_currentOffset = 1 + _argc;
 
 	//stop any other client transcode threads if necessary
-	if(_clientId != 255)
 	{
-		for(map<DWORD, CTranscoder*>::iterator it = transcoder_map.begin(); it != transcoder_map.end(); it++)
+	for(map<DWORD, CTranscoder*>::iterator it = transcoder_map.begin(); it != transcoder_map.end(); it++)
 			(it->second)->sigterm_handler(SIGTERM);
 
 		transcoder_map.clear();
@@ -58,7 +56,7 @@ HLSSTREAMCOMPOSERNATIVE_API int RunTranscoder(void* lpParameter, int len)
 
 	for(int i = 0; i < _argc; ++i)
 	{
-		int argLen = (unsigned char)buffer.get()[2 + i];
+		int argLen = (unsigned char)buffer.get()[1 + i];
 
 		_argv[i] = (char*)malloc(argLen + 1);
 		memcpy(_argv[i], &(buffer.get()[_currentOffset]), argLen);
@@ -78,17 +76,16 @@ HLSSTREAMCOMPOSERNATIVE_API int RunTranscoder(void* lpParameter, int len)
 HLSSTREAMCOMPOSERNATIVE_API int RunSegmenter(void* lpParameter, int len)
 {
 	auto_ptr<char> buffer(((char*)lpParameter));
-	int _argc = 0, _currentOffset = 0, _clientId = 0;
+	int _argc = 0, _currentOffset = 0;
 	char** _argv = NULL;	
-
-	_clientId = (unsigned char)buffer.get()[0];
-	_argc = buffer.get()[1];
+		
+	_argc = buffer.get()[0];
 	_argv = new char*[_argc];
-	_currentOffset = 2 + _argc;
+	_currentOffset = 1 + _argc;
 
 	for(int i = 0; i < _argc; ++i)
 	{
-		int argLen = (unsigned char)buffer.get()[2 + i];
+		int argLen = (unsigned char)buffer.get()[1 + i];
 
 		_argv[i] = (char*)malloc(argLen + 1);
 		memcpy(_argv[i], &(buffer.get()[_currentOffset]), argLen);
