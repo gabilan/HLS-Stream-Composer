@@ -23,6 +23,10 @@ namespace HlsStreamComposer
         static extern int RunSegmenter(IntPtr message, Int32 length);
 
         [DllImport(@"Lib\HlsStreamComposer.Native.dll",
+           EntryPoint = "RunProbe", CallingConvention = CallingConvention.Cdecl)]
+        static extern int RunProbe(IntPtr message, Int32 length);
+
+        [DllImport(@"Lib\HlsStreamComposer.Native.dll",
           EntryPoint = "StopTranscoder", CallingConvention = CallingConvention.Cdecl)]
         public static extern int StopTranscoder();
 
@@ -64,6 +68,17 @@ namespace HlsStreamComposer
 
             IntPtr args = RunProcess(arguments, out size);
             ret = RunSegmenter(args, size);
+            Marshal.FreeHGlobal(args);
+
+            return ret;
+        }
+
+        public static int Probe(string[] arguments)
+        {
+            int size = 0, ret = -1;
+
+            IntPtr args = RunProcess(arguments, out size);
+            ret = RunProbe(args, size);
             Marshal.FreeHGlobal(args);
 
             return ret;

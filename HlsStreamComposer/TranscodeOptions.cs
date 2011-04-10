@@ -22,7 +22,7 @@ namespace HlsStreamComposer
 
             AudioSampleRate = 44100,
             AudioChannels = 2,
-            AudioBitrate = 192 * 1024,
+            AudioBitrate = "128k",
             VideoCodec = "libx264",
             VideoPreset = "lossless_ultrafast",
             LateExtendedOptions = "-r 2997/100 -muxrate 10000000 -threads 0 -crf 25",
@@ -43,7 +43,7 @@ namespace HlsStreamComposer
 
             AudioSampleRate = 44100,
             AudioChannels = 2,
-            AudioBitrate = 192 * 1024,
+            AudioBitrate = "128k",
             ExcludeVideo = true,
             OutputFormat = "mpegts",
             OutputExtension = "mp4"
@@ -52,7 +52,7 @@ namespace HlsStreamComposer
         public int VerbosityLevel { get; set; }
         public string AudioCodec { get; set; }
         public int AudioSampleRate { get; set; }
-        public int AudioBitrate { get; set; }
+        public string AudioBitrate { get; set; }
         public int AudioChannels { get; set; }
         public string VideoCodec { get; set; }
         public int VideoBitrate { get; set; }
@@ -149,8 +149,8 @@ namespace HlsStreamComposer
                 if (AudioSampleRate > 0)
                     parameters.Add(string.Format("-ar {0}", AudioSampleRate));
 
-                if (AudioBitrate > 0)
-                    parameters.Add(string.Format("-ab {0}k", AudioBitrate >> 10));
+                if (!string.IsNullOrEmpty(AudioBitrate))
+                    parameters.Add(string.Format("-ab {0}", AudioBitrate));
 
                 if (AudioChannels > 0)
                     parameters.Add(string.Format("-ac {0}", AudioChannels));
@@ -245,10 +245,10 @@ namespace HlsStreamComposer
                     parameters.Add(AudioSampleRate.ToString());
                 }
 
-                if (AudioBitrate > 0)
+                if (!string.IsNullOrEmpty(AudioBitrate))
                 {
                     parameters.Add("-ab");
-                    parameters.Add(string.Format("{0}k", AudioBitrate >> 10));
+                    parameters.Add(AudioBitrate);
                 }
 
                 if (AudioChannels > 0)

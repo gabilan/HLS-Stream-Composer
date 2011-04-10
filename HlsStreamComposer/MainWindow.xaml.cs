@@ -21,24 +21,38 @@ namespace HlsStreamComposer
     {
         FileSelectionPage fsPage = new FileSelectionPage();
         EncodingOptionsPage eoPage = new EncodingOptionsPage();
+        ConfirmationPage cPage = new ConfirmationPage();
 
         public MainWindow()
         {
             InitializeComponent();
 
+            fsPage.Refresh();
             frameContent.Navigate(fsPage);
         }
 
         private void btnPrevious_Click(object sender, RoutedEventArgs e)
         {
+            ISaveablePage saveable = frameContent.Content as ISaveablePage;
+            if (saveable != null)
+                saveable.Save();
+
             if (frameContent.Content == eoPage)
                 frameContent.Navigate(fsPage);
+            else if (frameContent.Content == cPage)
+                frameContent.Navigate(eoPage);
         }
 
         private void btnNext_Click(object sender, RoutedEventArgs e)
         {
+            ISaveablePage saveable = frameContent.Content as ISaveablePage;
+            if (saveable != null)
+                saveable.Save();
+
             if (frameContent.Content == fsPage)
                 frameContent.Navigate(eoPage);
+            else if (frameContent.Content == eoPage)
+                frameContent.Navigate(cPage);
         }
 
         private void frameContent_Navigated(object sender, NavigationEventArgs e)

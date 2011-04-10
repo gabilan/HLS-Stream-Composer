@@ -19,7 +19,7 @@ namespace HlsStreamComposer
     /// <summary>
     /// Interaction logic for FileSelectionPage.xaml
     /// </summary>
-    public partial class FileSelectionPage : Page
+    public partial class FileSelectionPage : Page, ISaveablePage
     {
         public string InputPath { get { return tbInputFile.Text; } }
         public string OutputPath { get { return tbOutputDirectory.Text; } }
@@ -45,6 +45,17 @@ namespace HlsStreamComposer
             System.Windows.Forms.DialogResult result = dlg.ShowDialog(this.GetIWin32Window());
             if (result == System.Windows.Forms.DialogResult.OK)
                 tbOutputDirectory.Text = dlg.SelectedPath;
+        }
+
+        public void Save()
+        {
+            EncodingProcess.Current.InputPath = this.InputPath;
+            EncodingProcess.Current.OutputPath = this.OutputPath;
+        }
+
+        internal void Refresh()
+        {
+            EncodingProcess.Current = new EncodingProcess();
         }
     }
 }

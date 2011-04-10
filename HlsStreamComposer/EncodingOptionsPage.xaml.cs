@@ -18,7 +18,7 @@ namespace HlsStreamComposer
     /// <summary>
     /// Interaction logic for EncodingOptionsPage.xaml
     /// </summary>
-    public partial class EncodingOptionsPage : Page
+    public partial class EncodingOptionsPage : Page, ISaveablePage
     {
         public EncodingOptionsPage()
         {
@@ -97,6 +97,21 @@ namespace HlsStreamComposer
                 chars.Add(')');
 
             return new string(chars.ToArray());
+        }
+
+        public void Save()
+        {
+            int audioChannels = 0;
+            int audioSamplerate = 0;
+
+            EncodingProcess.Current.EncodingOptions.VideoPreset = cbVideoPreset.SelectedValue as string;
+            EncodingProcess.Current.EncodingOptions.AudioBitrate = cbAudioBitRate.SelectedValue as string;
+
+            if (int.TryParse(cbAudioSampleRate.SelectedValue as string, out audioSamplerate))
+                EncodingProcess.Current.EncodingOptions.AudioSampleRate = audioSamplerate;
+
+            if (int.TryParse(cbAudioChannels.SelectedValue as string, out audioChannels))
+                EncodingProcess.Current.EncodingOptions.AudioChannels = audioChannels;
         }
     }
 }

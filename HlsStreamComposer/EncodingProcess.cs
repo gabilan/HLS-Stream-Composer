@@ -9,9 +9,28 @@ namespace HlsStreamComposer
     class EncodingProcess
     {
         static readonly Dictionary<string, EncodingProcess> ProcessHistory = new Dictionary<string, EncodingProcess>();
+        public static EncodingProcess Current;
 
         public string ProcessId = Guid.NewGuid().ToString();
-        public string InputPath;
+
+        string inputPath;
+        public string InputPath
+        {
+            get
+            {
+                return inputPath;
+            }
+            set
+            {
+                if (inputPath != value)
+                {
+                    inputPath = value;
+                    InputFileDurationInSeconds = 0;
+                    GetFileDuration();
+                }
+            }
+        }
+
         public string OutputPath;
         public TranscodeOptions EncodingOptions;
         public int InputFileDurationInSeconds;
@@ -21,7 +40,27 @@ namespace HlsStreamComposer
         public EncodingProcess()
         {
             ProcessHistory.Add(this.ProcessId, this);
+            Current = this;
+
             EncodingOptions = TranscodeOptions.MPEGTS;
+        }
+
+        public void GetFileDuration()
+        {
+            if (InputFileDurationInSeconds > 0)
+                return;
+
+            string tempFileName = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString() + ".txt");
+            string[] args = { InputPath, tempFileName };
+
+            int ret = InteropHelper.Probe(args);
+            if (ret == 0)
+            {
+                foreach (var line in File.ReadAllLines(tempFileName))
+                {
+
+                }
+            }
         }
 
         public bool ReadyForEncode(ref  string errorMessage)
@@ -53,6 +92,12 @@ namespace HlsStreamComposer
             if (SegmentDurationInSeconds > 30)
             {
                 errorMessage = "The segment duration must be less than 30 seconds.";
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(EncodingOptions.VideoPreset))
+            {
+                errorMessage = "No video preset option has been specified.";
                 return false;
             }
 
