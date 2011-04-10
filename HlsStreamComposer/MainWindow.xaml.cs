@@ -23,5 +23,23 @@ namespace HlsStreamComposer
         {
             InitializeComponent();
         }
+
+        private void btnPrevious_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnNext_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void frameContent_Navigated(object sender, NavigationEventArgs e)
+        {
+            if (e.Content is FileSelectionPage)
+                btnPrevious.IsEnabled = false;
+            else
+                btnPrevious.IsEnabled = true;
+        }
     }
 }

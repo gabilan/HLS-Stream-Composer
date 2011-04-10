@@ -11,7 +11,7 @@
 
 int initialized = 0;
 
-HLSSTREAMCOMPOSERNATIVE_API int Initialize(const char* status_log_path, const char* error_log_path)
+HLSSTREAMCOMPOSERNATIVE_API Initialize(const char* status_log_path, const char* error_log_path)
 {		
 	if(initialized)
 		return 1;
@@ -36,7 +36,7 @@ HLSSTREAMCOMPOSERNATIVE_API int Initialize(const char* status_log_path, const ch
 	return 0;
 }
 
-HLSSTREAMCOMPOSERNATIVE_API int RunTranscoder(void* lpParameter, int len)
+HLSSTREAMCOMPOSERNATIVE_API RunTranscoder(void* lpParameter, int len)
 {
 	auto_ptr<char> buffer(((char*)lpParameter));
 	int _argc = 0, _currentOffset = 0;
@@ -73,7 +73,7 @@ HLSSTREAMCOMPOSERNATIVE_API int RunTranscoder(void* lpParameter, int len)
 	return ret;
 }
 
-HLSSTREAMCOMPOSERNATIVE_API int RunSegmenter(void* lpParameter, int len)
+HLSSTREAMCOMPOSERNATIVE_API RunSegmenter(void* lpParameter, int len)
 {
 	auto_ptr<char> buffer(((char*)lpParameter));
 	int _argc = 0, _currentOffset = 0;
@@ -102,7 +102,7 @@ HLSSTREAMCOMPOSERNATIVE_API int RunSegmenter(void* lpParameter, int len)
 	return ret;
 }
 
-HLSSTREAMCOMPOSERNATIVE_API int StopTranscoder()
+HLSSTREAMCOMPOSERNATIVE_API StopTranscoder()
 {
 	for(map<DWORD, CTranscoder*>::iterator it = transcoder_map.begin(); it != transcoder_map.end(); it++)
 		(it->second)->sigterm_handler(SIGTERM);		

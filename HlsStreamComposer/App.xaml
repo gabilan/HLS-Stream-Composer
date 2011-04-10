@@ -1,8 +1,8 @@
 ﻿<Application x:Class="HlsStreamComposer.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    StartupUri="Window1.xaml">
+    StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <ResourceDictionary Source="/ReuxablesLegacy;component/inc.xaml" />
     </Application.Resources>
 </Application>

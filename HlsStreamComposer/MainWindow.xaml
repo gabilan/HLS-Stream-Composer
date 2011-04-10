@@ -1,8 +1,29 @@
 ﻿<Window x:Class="HlsStreamComposer.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    Title="HLS Stream Composer" Height="235" Width="472">
+    Title="HLS Stream Composer" Height="300" Width="500">
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="210" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Frame Grid.Row="0" Grid.Column="0" Name="frameContent" Source="FileSelectionPage.xaml" NavigationUIVisibility="Hidden" Navigated="frameContent_Navigated" />
+        <Grid Grid.Row="1" Grid.Column="0" Margin="2,2,2,2" HorizontalAlignment="Right">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="80" />
+                <ColumnDefinition Width="80" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30" />
+            </Grid.RowDefinitions>
+
+            <Button Name="btnPrevious" Grid.Row="0" Grid.Column="0" Margin="2,2,2,2" IsEnabled="False" Click="btnPrevious_Click">
+                <TextBlock FontSize="14">Previous</TextBlock>
+            </Button>
+            <Button Name="btnNext" Grid.Row="0" Grid.Column="1" Margin="2,2,2,2" Click="btnNext_Click">
+                <TextBlock FontSize="14">Next</TextBlock>
+            </Button>
+        </Grid>
     </Grid>
 </Window>
