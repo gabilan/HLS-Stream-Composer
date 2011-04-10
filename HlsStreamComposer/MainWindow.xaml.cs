@@ -19,19 +19,26 @@ namespace HlsStreamComposer
     /// </summary>
     public partial class MainWindow : Window
     {
+        FileSelectionPage fsPage = new FileSelectionPage();
+        EncodingOptionsPage eoPage = new EncodingOptionsPage();
+
         public MainWindow()
         {
             InitializeComponent();
+
+            frameContent.Navigate(fsPage);
         }
 
         private void btnPrevious_Click(object sender, RoutedEventArgs e)
         {
-
+            if (frameContent.Content == eoPage)
+                frameContent.Navigate(fsPage);
         }
 
         private void btnNext_Click(object sender, RoutedEventArgs e)
         {
-
+            if (frameContent.Content == fsPage)
+                frameContent.Navigate(eoPage);
         }
 
         private void frameContent_Navigated(object sender, NavigationEventArgs e)

@@ -8,7 +8,7 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <Frame Grid.Row="0" Grid.Column="0" Name="frameContent" Source="FileSelectionPage.xaml" NavigationUIVisibility="Hidden" Navigated="frameContent_Navigated" />
+        <Frame Grid.Row="0" Grid.Column="0" Name="frameContent" NavigationUIVisibility="Hidden" Navigated="frameContent_Navigated" />
         <Grid Grid.Row="1" Grid.Column="0" Margin="2,2,2,2" HorizontalAlignment="Right">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="80" />
