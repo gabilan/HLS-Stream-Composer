@@ -1,9 +1,9 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HlsStreamComposer", "HlsStreamComposer\HlsStreamComposer.csproj", "{6116FFB2-A5E6-471E-A4EA-7A27A3008BED}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HlsStreamComposer.Native", "HlsStreamComposer.Native\HlsStreamComposer.Native.vcproj", "{F3D58806-81D9-4C67-83EB-6E292E1CD44D}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HlsStreamComposer.Native", "HlsStreamComposer.Native\HlsStreamComposer.Native.vcxproj", "{F3D58806-81D9-4C67-83EB-6E292E1CD44D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

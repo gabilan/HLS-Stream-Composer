@@ -14,3 +14,9 @@ HlsStreamComposer/HlsStreamComposer.csproj.user
 HlsStreamComposer/bin/Debug/HlsStreamComposer.vshost.exe
 HlsStreamComposer/bin/*
 HlsStreamComposer/bin/Debug/HlsStreamComposer.vshost.exe
+HlsStreamComposer.opensdf
+HlsStreamComposer.sdf
+HlsStreamComposer.Native/HlsStreamComposer.Native.vcxproj.filters
+HlsStreamComposer.Native/HlsStreamComposer.Native.vcxproj.user
+HlsStreamComposer/bin/Debug/HlsStreamComposer.vshost.exe
+HlsStreamComposer/bin/Debug/HlsStreamComposer.vshost.exe.manifest
