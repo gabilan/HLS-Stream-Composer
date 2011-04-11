@@ -21,3 +21,5 @@ HlsStreamComposer.Native/HlsStreamComposer.Native.vcxproj.user
 HlsStreamComposer/bin/Debug/HlsStreamComposer.vshost.exe
 HlsStreamComposer/bin/Debug/HlsStreamComposer.vshost.exe.manifest
 ipch/hlsstreamcomposer.native-65a5df8a/hlsstreamcomposer.ipch
+HlsStreamComposer.Native/Release/*
+Release/*
