@@ -31,20 +31,21 @@ namespace HlsStreamComposer
 
                 string presetName = Cleanse(file);
                 string presetDisplayText = NormalizeText(presetName);
+                bool isSelected = presetName.Equals("lossless_ultrafast", StringComparison.CurrentCultureIgnoreCase);
 
-                ComboBoxItem cbItem = new ComboBoxItem() { Content = presetDisplayText, Tag = presetName };
+                ComboBoxItem cbItem = new ComboBoxItem() { Content = presetDisplayText, Tag = presetName, IsSelected = isSelected };
                 cbVideoPreset.Items.Add(cbItem);
             }
 
-            cbAudioBitRate.Items.Add(new ComboBoxItem() { Content = "192k" });
+            cbAudioBitRate.Items.Add(new ComboBoxItem() { Content = "192k", IsSelected = true });
             cbAudioBitRate.Items.Add(new ComboBoxItem() { Content = "128k" });
             cbAudioBitRate.Items.Add(new ComboBoxItem() { Content = "96k" });
             cbAudioBitRate.Items.Add(new ComboBoxItem() { Content = "64k" });
 
-            cbAudioSampleRate.Items.Add(new ComboBoxItem() { Content = "48000" });
+            cbAudioSampleRate.Items.Add(new ComboBoxItem() { Content = "48000", IsSelected = true });
             cbAudioSampleRate.Items.Add(new ComboBoxItem() { Content = "44100" });
 
-            cbAudioChannels.Items.Add(new ComboBoxItem() { Content = "2" });
+            cbAudioChannels.Items.Add(new ComboBoxItem() { Content = "2", IsSelected = true });
             cbAudioChannels.Items.Add(new ComboBoxItem() { Content = "1" });
         }
 
@@ -104,7 +105,7 @@ namespace HlsStreamComposer
             int audioChannels = 0;
             int audioSamplerate = 0;
 
-            EncodingProcess.Current.EncodingOptions.VideoPreset = cbVideoPreset.SelectedValue as string;
+            EncodingProcess.Current.EncodingOptions.VideoPreset = cbVideoPreset.SelectedItem != null ? ((ComboBoxItem)cbVideoPreset.SelectedItem).Tag as string : "lossless_ultrafast";
             EncodingProcess.Current.EncodingOptions.AudioBitrate = cbAudioBitRate.SelectedValue as string;
 
             if (int.TryParse(cbAudioSampleRate.SelectedValue as string, out audioSamplerate))

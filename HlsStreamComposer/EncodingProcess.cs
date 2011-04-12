@@ -6,10 +6,14 @@ using System.IO;
 
 namespace HlsStreamComposer
 {
-    class EncodingProcess
+    public class EncodingProcess
     {
         static readonly Dictionary<string, EncodingProcess> ProcessHistory = new Dictionary<string, EncodingProcess>();
         public static EncodingProcess Current;
+        public static EncodingProcess GetCurrent()
+        {
+            return Current;
+        }
 
         public string ProcessId = Guid.NewGuid().ToString();
 
@@ -34,7 +38,7 @@ namespace HlsStreamComposer
         public string OutputPath;
         public TranscodeOptions EncodingOptions;
         public int InputFileDurationInSeconds;
-        public int SegmentDurationInSeconds;
+        public int SegmentDurationInSeconds = 10;
         public double AmountOfTimeEncodedAndSegmented;
 
         public EncodingProcess()
@@ -56,10 +60,46 @@ namespace HlsStreamComposer
             int ret = InteropHelper.Probe(args);
             if (ret == 0)
             {
+                Dictionary<string, List<Dictionary<string, string>>> probeInfo = new Dictionary<string, List<Dictionary<string, string>>>();
+                string nodeName = null;
+
                 foreach (var line in File.ReadAllLines(tempFileName))
                 {
+                    if (line[0] == '[')
+                    {
+                        if (nodeName != null)
+                            nodeName = null;
+                        else
+                        {
+                            nodeName = line.Substring(1, line.Length - 2);
+                            if (!probeInfo.ContainsKey(nodeName))
+                                probeInfo.Add(nodeName, new List<Dictionary<string, string>>());
 
+                            probeInfo[nodeName].Add(new Dictionary<string, string>());
+                        }
+                    }
+                    else
+                    {
+                        int eqlIdx = -1;
+                        eqlIdx = line.IndexOf('=');
+
+                        if (eqlIdx != -1)
+                        {
+                            string key = null, value = null;
+
+                            key = line.Substring(0, eqlIdx);
+                            value = line.Substring(eqlIdx + 1, line.Length - (eqlIdx + 1));
+
+                            probeInfo[nodeName][probeInfo[nodeName].Count - 1].Add(key, value);
+                        }
+                    }
                 }
+
+                TimeSpan ts;
+                if (!probeInfo.ContainsKey("FORMAT") || !probeInfo["FORMAT"][0].ContainsKey("duration") || !TimeSpan.TryParse(probeInfo["FORMAT"][0]["duration"], out ts))
+                    throw new ApplicationException("Unable to probe input file format and retrieve its duration.");
+
+                this.InputFileDurationInSeconds = (int)ts.TotalSeconds;
             }
         }
 

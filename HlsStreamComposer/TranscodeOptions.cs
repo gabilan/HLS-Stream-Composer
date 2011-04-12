@@ -7,7 +7,7 @@ using System.Text;
 
 namespace HlsStreamComposer
 {
-    class TranscodeOptions
+    public class TranscodeOptions
     {
         public static readonly TranscodeOptions MPEGTS = new TranscodeOptions()
         {

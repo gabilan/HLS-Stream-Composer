@@ -37,11 +37,11 @@ HLSSTREAMCOMPOSERNATIVE_API Initialize(const char* status_log_path, const char* 
 
 HLSSTREAMCOMPOSERNATIVE_API RunTranscoder(void* lpParameter, int len)
 {
-	auto_ptr<char> buffer(((char*)lpParameter));
+	char* buffer = (((char*)lpParameter));
 	int _argc = 0, _currentOffset = 0;
 	char** _argv = NULL;	
 		
-	_argc = buffer.get()[0];
+	_argc = buffer[0];
 	_argv = new char*[_argc];
 	_currentOffset = 1 + _argc;
 
@@ -55,49 +55,47 @@ HLSSTREAMCOMPOSERNATIVE_API RunTranscoder(void* lpParameter, int len)
 
 	for(int i = 0; i < _argc; ++i)
 	{
-		int argLen = (unsigned char)buffer.get()[1 + i];
+		int argLen = (unsigned char)buffer[1 + i];
 
 		_argv[i] = (char*)malloc(argLen + 1);
-		memcpy(_argv[i], &(buffer.get()[_currentOffset]), argLen);
+		memcpy(_argv[i], &(buffer[_currentOffset]), argLen);
 		_argv[i][argLen] = '\0';
 
 		_currentOffset += argLen;
 	}
 
-	auto_ptr<CTranscoder> t(new CTranscoder);
-	int ret = t.get()->Run(_argc, _argv);
+	CTranscoder* t = new CTranscoder();
+	int ret = t->Run(_argc, _argv);
 
-	t.reset();
-	buffer.reset();
+	delete t;	
 	return ret;
 }
 
 HLSSTREAMCOMPOSERNATIVE_API RunSegmenter(void* lpParameter, int len)
 {
-	auto_ptr<char> buffer(((char*)lpParameter));
+	char* buffer = (((char*)lpParameter));
 	int _argc = 0, _currentOffset = 0;
 	char** _argv = NULL;	
 		
-	_argc = buffer.get()[0];
+	_argc = buffer[0];
 	_argv = new char*[_argc];
 	_currentOffset = 1 + _argc;
 
 	for(int i = 0; i < _argc; ++i)
 	{
-		int argLen = (unsigned char)buffer.get()[1 + i];
+		int argLen = (unsigned char)buffer[1 + i];
 
 		_argv[i] = (char*)malloc(argLen + 1);
-		memcpy(_argv[i], &(buffer.get()[_currentOffset]), argLen);
+		memcpy(_argv[i], &(buffer[_currentOffset]), argLen);
 		_argv[i][argLen] = '\0';
 
 		_currentOffset += argLen;
 	}
 
-	auto_ptr<CSegmenter> t (new CSegmenter);
-	int ret = t.get()->Run(_argc, _argv);
+	CSegmenter* t = new CSegmenter();
+	int ret = t->Run(_argc, _argv);
 
-	t.reset();
-	buffer.reset();
+	delete t;	
 	return ret;
 }
 

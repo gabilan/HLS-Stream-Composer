@@ -57,8 +57,15 @@ namespace HlsStreamComposer
 
         private void frameContent_Navigated(object sender, NavigationEventArgs e)
         {
+            btnPrevious.Visibility = System.Windows.Visibility.Visible;
+            btnNext.Visibility = System.Windows.Visibility.Visible;
             if (e.Content is FileSelectionPage)
                 btnPrevious.IsEnabled = false;
+            else if (e.Content is ConfirmationPage)
+            {
+                btnNext.Visibility = System.Windows.Visibility.Hidden;
+                btnPrevious.Visibility = System.Windows.Visibility.Hidden;
+            }
             else
                 btnPrevious.IsEnabled = true;
         }
