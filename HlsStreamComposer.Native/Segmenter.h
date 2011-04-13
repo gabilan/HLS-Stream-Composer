@@ -450,13 +450,9 @@ public:
 __free_av_packet:
 				av_free_packet(&packet);
 			} while (!decode_done);
-
-
-			if(config.status_callback)
-				config.status_callback(config.process_id, output_index - 1, max(0, segment_time - prev_segment_time));
-
+							
 			av_write_trailer(output_context);		
-
+			
 			if (video_index >= 0) 
 			{
 				avcodec_close(video_stream->codec);
@@ -470,7 +466,24 @@ __free_av_packet:
 
 			url_fclose(output_context->pb);
 			av_free(output_context);	
-			rename(output_filename, new_output_filename);
+			
+			if(prev_segment_time != segment_time)
+			{
+				playlist_update_context* updateCtx = (playlist_update_context*)malloc(sizeof(playlist_update_context));
+				memset(updateCtx, 0, sizeof(playlist_update_context));
+
+				updateCtx->ptr_this = this;
+				updateCtx->process_id = config.process_id;
+				updateCtx->index = output_index - 1;
+				updateCtx->duration = max(config.segment_length, segment_time - prev_segment_time);
+				updateCtx->status_callback = config.status_callback;
+
+				memcpy(updateCtx->old_filename, output_filename, 1024);
+				memcpy(updateCtx->new_filename, new_output_filename, 1024);
+
+				snprintf(updateCtx->playlist_entry, 1024, "#EXTINF:%d,%05u.ts\n%s%05u.ts\n", (int)max(config.segment_length, segment_time - prev_segment_time), output_index - 1, config.filename_prefix, output_index -1);
+				RenameFileAndUpdatePlaylist(updateCtx);
+			}
 		}catch(...){
 		}
 

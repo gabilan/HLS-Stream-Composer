@@ -25,7 +25,8 @@ namespace HlsStreamComposer
             AudioBitrate = "128k",
             VideoCodec = "libx264",
             VideoPreset = "lossless_ultrafast",
-            LateExtendedOptions = "-r 2997/100 -muxrate 10000000 -threads 0 -crf 25",
+            VideoBitrate = "3M",
+            LateExtendedOptions = "-r 2997/100 -muxrate 10000000 -threads 0",
             OutputFormat = "mpegts",
             OutputExtension = "mp4"
         };
@@ -57,7 +58,7 @@ namespace HlsStreamComposer
         public string AudioBitrate { get; set; }
         public int AudioChannels { get; set; }
         public string VideoCodec { get; set; }
-        public int VideoBitrate { get; set; }
+        public string VideoBitrate { get; set; }
         public string VideoPreset { get; set; }
         public int VideoWidth { get; set; }
         public int VideoHeight { get; set; }
@@ -136,8 +137,8 @@ namespace HlsStreamComposer
                 if (VideoFramerate > 0)
                     parameters.Add(string.Format("-r {0}", VideoFramerate.ToString("F")));
 
-                if (VideoBitrate > 0)
-                    parameters.Add(string.Format("-b {0}k", VideoBitrate >> 10));
+                if (!string.IsNullOrEmpty(VideoBitrate))
+                    parameters.Add(string.Format("-b {0}", VideoBitrate));
 
                 if (!string.IsNullOrEmpty(VideoPreset))
                     parameters.Add(string.Format("-vpre {0}", VideoPreset));
@@ -226,10 +227,10 @@ namespace HlsStreamComposer
                     parameters.Add(VideoFramerate.ToString("F"));
                 }
 
-                if (VideoBitrate > 0)
+                if (!string.IsNullOrEmpty(VideoBitrate))
                 {
                     parameters.Add("-b");
-                    parameters.Add(string.Format("{0}k", VideoBitrate >> 10));
+                    parameters.Add(VideoBitrate);
                 }
 
                 if (!string.IsNullOrEmpty(VideoPreset))
