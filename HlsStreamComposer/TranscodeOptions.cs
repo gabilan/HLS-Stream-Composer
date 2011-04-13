@@ -49,6 +49,8 @@ namespace HlsStreamComposer
             OutputExtension = "mp4"
         };
 
+        public string InputFile { get; set; }
+        public string OutputFile { get; set; }
         public int VerbosityLevel { get; set; }
         public string AudioCodec { get; set; }
         public int AudioSampleRate { get; set; }
@@ -81,6 +83,8 @@ namespace HlsStreamComposer
         public TranscodeOptions(TranscodeOptions options)
             : this()
         {
+            this.InputFile = options.InputFile;
+            this.OutputFile = options.OutputFile;
             this.VerbosityLevel = options.VerbosityLevel;
             this.AudioCodec = options.AudioCodec;
             this.AudioSampleRate = options.AudioSampleRate;
@@ -103,6 +107,9 @@ namespace HlsStreamComposer
         public override string ToString()
         {
             List<string> parameters = new List<string>();
+
+            if (!string.IsNullOrEmpty(InputFile))
+                parameters.Add(string.Format("-i \"{0}\"", InputFile));
 
             if (VerbosityLevel >= 0)
                 parameters.Add(string.Format("-v {0}", VerbosityLevel));
@@ -165,12 +172,21 @@ namespace HlsStreamComposer
             if (AudioStreamIndex != -1)
                 parameters.Add(string.Format("-map 0:{0}", AudioStreamIndex));
 
+            if (!string.IsNullOrEmpty(OutputFile))
+                parameters.Add(string.Format("\"{0}\"", OutputFile));
+
             return string.Join(" ", parameters.ToArray());
         }
 
         public string[] ToStringArray()
         {
             List<string> parameters = new List<string>();
+
+            if (!string.IsNullOrEmpty(InputFile))
+            {
+                parameters.Add("-i");
+                parameters.Add(InputFile);
+            }
 
             if (VerbosityLevel >= 0)
             {
@@ -272,6 +288,9 @@ namespace HlsStreamComposer
                 parameters.Add("-map");
                 parameters.Add(string.Format("0:{0}", AudioStreamIndex));
             }
+
+            if (!string.IsNullOrEmpty(OutputFile))
+                parameters.Add(string.Format("\"{0}\"", OutputFile));
 
             return parameters.ToArray();
         }

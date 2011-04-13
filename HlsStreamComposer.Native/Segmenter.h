@@ -12,24 +12,28 @@ struct config_info
 	char filename_prefix[1024];
 	int start_index;
 	double start_time;
-	char segmentIndexFileLocation[1024];
+
+	char playlist_file_name[256];
+	char playlist_file_location[1024];
+	char process_id[1024];
+	void* callback_pointer;	
 };
 
-struct file_index_update_context
+struct playlist_update_context
 {
-	void*	thisPtr;
+	void*	ptr_this;
 	char	old_filename[1024];
 	char	new_filename[1024];
-	char	index_entry[2048];
+	char	playlist_entry[2048];
 };
 
 
-DWORD __stdcall RenameFileAndUpdateIndex(LPVOID p);
+DWORD __stdcall RenameFileAndUpdatePlaylist(LPVOID p);
 
 class CSegmenter
 {
 public:
-	FILE* segmentIndexFile;
+	FILE* playlistFile;
 
 private:	
 
@@ -102,12 +106,14 @@ private:
 
 	void __exit(int exitCode)
 	{
-		if(segmentIndexFile)
+		if(playlistFile)
 		{
-			_fclose_nolock(segmentIndexFile);
-			segmentIndexFile = NULL;
+			fprintf(playlistFile, "#EXT-X-ENDLIST\n");
+			_fclose_nolock(playlistFile);
+			playlistFile = NULL;
 		}
 
+		if(exitCode)
 		ExitThread(exitCode);
 	}	
 
@@ -115,15 +121,16 @@ public:
 
 	CSegmenter(void)
 	{
-		segmentIndexFile = NULL;
+		playlistFile = NULL;
 	}
 
 	~CSegmenter(void)
 	{
-		if(segmentIndexFile)
+		if(playlistFile)
 		{
-			_fclose_nolock(segmentIndexFile);
-			segmentIndexFile = NULL;
+			fprintf(playlistFile, "#EXT-X-ENDLIST\n");
+			_fclose_nolock(playlistFile);
+			playlistFile = NULL;
 		}
 	}
 
@@ -132,23 +139,33 @@ public:
 		try{
 			if(argc < 4)
 			{
-				fprintf(stderr, "Usage: %s <input filename> <segment length> <output location> <filename prefix> <start segment> <start time>\n", "segmenter.exe");
+				fprintf(stderr, "Usage: %s <input filename> <segment length> <output location> <filename prefix> <playlist file location> <process id> <callback pointer address> <start segment> <start time>\n", "segmenter.exe");
 				return 1;
 			}
 
 			struct config_info config;
-
 			memset(&config, 0, sizeof(struct config_info));
 
 			strcpy(config.input_filename, argv[0]);
 			config.segment_length = atoi(argv[1]); 
 			strcpy(config.temp_directory, argv[2]);
 			strcpy(config.filename_prefix, argv[3]);
+			strcpy(config.playlist_file_name, argv[4]);
 
 			if(argc > 5)
 			{
-				config.start_index = atoi(argv[4]);
-				config.start_time = atof(argv[5]);
+				strcpy(config.process_id, argv[5]);
+				
+				__int64 pointer_val = 0;
+				pointer_val = _atoi64(argv[6]);
+				if(pointer_val)
+					config.callback_pointer = (void*)pointer_val;
+			}
+
+			if(argc > 8)
+			{
+				config.start_index = atoi(argv[7]);
+				config.start_time = atof(argv[8]);
 			}
 			else
 			{
@@ -157,16 +174,22 @@ public:
 			}
 
 			//setup the segment index file
-			snprintf(config.segmentIndexFileLocation, strlen(config.temp_directory) + 10, "%s\\%s", config.temp_directory, "index.xml");		
+			snprintf(config.playlist_file_location, strlen(config.temp_directory) + strlen(config.playlist_file_name) + 2, "%s\\%s", config.temp_directory, config.playlist_file_name);		
 
 			char output_filename[1024];
 			char new_output_filename[1024];			
 
-			segmentIndexFile = fopen(config.segmentIndexFileLocation, config.start_index ? "a" : "w");
-			if(segmentIndexFile == NULL)
+			playlistFile = fopen(config.playlist_file_location, config.start_index ? "a" : "w");
+			if(playlistFile == NULL)
 			{
 				fprintf(stderr, "Segmenter error: Could not find open index file for writing\n");
 				__exit(1);
+			}
+			else
+			{
+				fprintf(playlistFile, "#EXTM3U\n");
+				fprintf(playlistFile, "#EXT-X-TARGETDURATION:%d\n", config.segment_length);
+				fprintf(playlistFile, "#EXT-X-MEDIA-SEQUENCE:0\n");                
 			}
 
 			AVInputFormat *input_format = av_find_input_format("mpegts");
@@ -264,8 +287,8 @@ public:
 
 			unsigned int output_index = config.start_index ? config.start_time ? 99999 : config.start_index  + 1 : 1;
 
-			snprintf(output_filename, strlen(config.temp_directory) + 1 + strlen(config.filename_prefix) + 11, "%s\\%s-%05u.ts_", config.temp_directory, config.filename_prefix, output_index);
-			snprintf(new_output_filename, strlen(config.temp_directory) + 1 + strlen(config.filename_prefix) + 10, "%s\\%s-%05u.ts", config.temp_directory, config.filename_prefix, output_index++);
+			snprintf(output_filename, strlen(config.temp_directory) + 11, "%s\\%05u.ts_", config.temp_directory, output_index);
+			snprintf(new_output_filename, strlen(config.temp_directory) + 10, "%s\\%05u.ts", config.temp_directory, output_index++);
 
 			if (url_fopen(&output_context->pb, output_filename, URL_WRONLY) < 0) 
 			{
@@ -367,35 +390,30 @@ public:
 				{
 					old_video_pts = video_stream->pts;
 
-					put_flush_packet(output_context->pb);
-					//av_write_trailer(output_context);
+					put_flush_packet(output_context->pb);					
 					url_fclose(output_context->pb);
 
+					//rename the output file and add it to the playlist in a different theread
 					{
-						file_index_update_context* updateCtx = (file_index_update_context*)malloc(sizeof(file_index_update_context));
-						memset(updateCtx, 0, sizeof(file_index_update_context));
-						updateCtx->thisPtr = this;
+						playlist_update_context* updateCtx = (playlist_update_context*)malloc(sizeof(playlist_update_context));
+						memset(updateCtx, 0, sizeof(playlist_update_context));
+						updateCtx->ptr_this = this;
 
 						memcpy(updateCtx->old_filename, output_filename, 1024);
 						memcpy(updateCtx->new_filename, new_output_filename, 1024);
 
-						snprintf(updateCtx->index_entry, 1024, "<segment index=\"%d\" file=\"%s\" duration=\"%f\" />\n", output_index - 1, output_filename, (float)(segment_time - prev_segment_time));
-						CreateThread(NULL, 0, RenameFileAndUpdateIndex, updateCtx, 0, NULL);
+						snprintf(updateCtx->playlist_entry, 1024, "#EXTINF:%d,%05u.ts\n%s%05u.ts\n", (int)(segment_time - prev_segment_time), output_index - 1, config.filename_prefix, output_index -1);
+						CreateThread(NULL, 0, RenameFileAndUpdatePlaylist, updateCtx, 0, NULL);
 					}
 
-					snprintf(output_filename, strlen(config.temp_directory) + 1 + strlen(config.filename_prefix) + 11, "%s\\%s-%05u.ts_", config.temp_directory, config.filename_prefix, output_index);
-					snprintf(new_output_filename, strlen(config.temp_directory) + 1 + strlen(config.filename_prefix) + 10, "%s\\%s-%05u.ts", config.temp_directory, config.filename_prefix, output_index++);
+					snprintf(output_filename, strlen(config.temp_directory) + 11, "%s\\%05u.ts_", config.temp_directory, output_index);
+					snprintf(new_output_filename, strlen(config.temp_directory) + 10, "%s\\%05u.ts", config.temp_directory, output_index++);
 					if (url_fopen(&output_context->pb, output_filename, URL_WRONLY) < 0) 
 					{
 						fprintf(stderr, "Segmenter error: Could not open '%s'\n", output_filename);
 						break;
 					}
-					/*else if (av_write_header(output_context)) 
-					{
-					fprintf(stderr, "Segmenter error: Could not write mpegts header to output file\n");
-					__exit(1);
-					}*/		
-
+					
 					prev_segment_time = segment_time;
 				}				
 
@@ -438,26 +456,30 @@ __free_av_packet:
 	}
 };
 
-DWORD __stdcall RenameFileAndUpdateIndex(LPVOID p)
+DWORD __stdcall RenameFileAndUpdatePlaylist(LPVOID p)
 {
-	file_index_update_context* ctx = (file_index_update_context*)p;
+	playlist_update_context* ctx = (playlist_update_context*)p;
 	CSegmenter* c = NULL;
 	if(!ctx)
 		return -1;
 	else
-		c = (CSegmenter*)ctx->thisPtr;
+		c = (CSegmenter*)ctx->ptr_this;
 
 	if(!c)
 		return -1;
 
 	//update the index
-	if(c->segmentIndexFile){
-		fprintf(c->segmentIndexFile, ctx->index_entry);
-		fflush(c->segmentIndexFile);
+	if(c->playlistFile){
+		fprintf(c->playlistFile, ctx->playlist_entry);
+		fflush(c->playlistFile);
 	}
 
 	//rename the file
-	rename(ctx->old_filename, ctx->new_filename);
+	while(rename(ctx->old_filename, ctx->new_filename) != 0)
+	{
+		remove(ctx->new_filename);
+		Sleep(100);
+	}
 
 	return 0;
 }

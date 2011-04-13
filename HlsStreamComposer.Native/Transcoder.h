@@ -296,14 +296,19 @@ private:
 	{
 		return q_pressed || (q_pressed = read_key() == 'q');
 	}
-
+		
 	int ffmpeg_exit(int ret)
 	{
-		return ffmpeg_exit(ret, true);
+		return ffmpeg_exit(ret, false);
 	}
 
 	int ffmpeg_exit(int ret, bool exitThread)
 	{
+		if(haveExited)
+			return 0;
+		else
+			haveExited = TRUE;
+
 		int i;
 
 		/* close files */
@@ -4180,10 +4185,12 @@ private:
 		}
 	}
 
+	BOOL haveExited;
 public:
 
 	CTranscoder(void)
 	{
+		haveExited = FALSE;
 		last_asked_format = NULL;
 		input_files_ts_scale[0] = NULL;
 		input_codecs = NULL;
@@ -4531,9 +4538,10 @@ public:
 		}
 
 		ti = getutime();
-		if (transcode(output_files, nb_output_files, input_files, nb_input_files,
-			stream_maps, nb_stream_maps) < 0)
-			ffmpeg_exit(1);
+		
+		if (transcode(output_files, nb_output_files, input_files, nb_input_files, stream_maps, nb_stream_maps) < 0)
+			return ffmpeg_exit(1);
+
 		ti = getutime() - ti;
 		if (do_benchmark) {
 			int maxrss = getmaxrss() / 1024;
@@ -4552,6 +4560,16 @@ static void process_output_file(const char* filename)
 	threadId = GetCurrentThreadId();
 	if(!threadId)
 		return;
+
+	int len = strlen(filename);
+	if(filename[0] == '\"' && filename[len - 1] == '\"')
+	{
+		char* tmpStr = (char*)malloc(len - 1);
+		memset(tmpStr, 0, len - 1);
+		memcpy(tmpStr, &filename[1], len - 2);
+		strcpy((char*)filename, tmpStr);
+		free(tmpStr);
+	}
 
 	transcoder = transcoder_map[threadId];
 	transcoder->opt_output_file(filename);

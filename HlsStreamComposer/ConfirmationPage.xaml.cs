@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Threading;
 
 namespace HlsStreamComposer
 {
@@ -18,7 +19,7 @@ namespace HlsStreamComposer
     /// Interaction logic for ConfirmationPage.xaml
     /// </summary>
     public partial class ConfirmationPage : Page
-    {
+    {      
         public ConfirmationPage()
         {
             InitializeComponent();
@@ -38,6 +39,8 @@ namespace HlsStreamComposer
             ObjectDataProvider objProv = this.Resources["objProv"] as ObjectDataProvider;
             if (objProv != null)
                 objProv.Refresh();
+
+            EncodingProcess.Current.Start();
         }
     }
 }

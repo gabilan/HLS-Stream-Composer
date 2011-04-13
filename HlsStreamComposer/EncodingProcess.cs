@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
+using System.Threading;
 
 namespace HlsStreamComposer
 {
@@ -10,43 +11,55 @@ namespace HlsStreamComposer
     {
         static readonly Dictionary<string, EncodingProcess> ProcessHistory = new Dictionary<string, EncodingProcess>();
         public static EncodingProcess Current;
-        public static EncodingProcess GetCurrent()
+        public static EncodingProcess GetCurrent() { return Current; }
+
+        public string ProcessId
         {
-            return Current;
+            get { return SegmentOptions.ProcessId; }
+            set { SegmentOptions.ProcessId = value; }
         }
 
-        public string ProcessId = Guid.NewGuid().ToString();
-
-        string inputPath;
         public string InputPath
         {
             get
             {
-                return inputPath;
+                return EncodingOptions.InputFile;
             }
             set
             {
-                if (inputPath != value)
+                if (EncodingOptions.InputFile != value)
                 {
-                    inputPath = value;
+                    EncodingOptions.InputFile = value;
                     InputFileDurationInSeconds = 0;
                     GetFileDuration();
                 }
             }
         }
 
-        public string OutputPath;
-        public TranscodeOptions EncodingOptions;
-        public int InputFileDurationInSeconds;
-        public int SegmentDurationInSeconds = 10;
-        public double AmountOfTimeEncodedAndSegmented;
+        public string OutputPath
+        {
+            get { return SegmentOptions.OutputLocation; }
+            set { SegmentOptions.OutputLocation = value; }
+        }
+
+        ThreadStart GenerateHlsStreamThread;
+        ThreadStart SegmentHlsStreamThread;
+        public TranscodeOptions EncodingOptions { get; set; }
+        public SegmentationOptions SegmentOptions { get; set; }
+        public int InputFileDurationInSeconds { get; set; }
+        public double AmountOfTimeEncodedAndSegmented { get; set; }
 
         public EncodingProcess()
         {
+            EncodingOptions = TranscodeOptions.MPEGTS;
+            SegmentOptions = new SegmentationOptions();
+            GenerateHlsStreamThread = new ThreadStart(GenerateHlsStream);
+            SegmentHlsStreamThread = new ThreadStart(SegmentHlsStream);
+
+
+            this.ProcessId = Guid.NewGuid().ToString();
             ProcessHistory.Add(this.ProcessId, this);
             Current = this;
-
-            EncodingOptions = TranscodeOptions.MPEGTS;
         }
 
         public void GetFileDuration()
@@ -65,6 +78,9 @@ namespace HlsStreamComposer
 
                 foreach (var line in File.ReadAllLines(tempFileName))
                 {
+                    if (string.IsNullOrEmpty(line))
+                        continue;
+
                     if (line[0] == '[')
                     {
                         if (nodeName != null)
@@ -123,13 +139,13 @@ namespace HlsStreamComposer
                 return false;
             }
 
-            if (SegmentDurationInSeconds < 5)
+            if (SegmentOptions.SegmentLength < 5)
             {
                 errorMessage = "The segment duration must be at least 5 seconds.";
                 return false;
             }
 
-            if (SegmentDurationInSeconds > 30)
+            if (SegmentOptions.SegmentLength > 30)
             {
                 errorMessage = "The segment duration must be less than 30 seconds.";
                 return false;
@@ -144,7 +160,44 @@ namespace HlsStreamComposer
             return true;
         }
 
-        static void EncodingStatusUpdateCallback(string processId, int segmentNumber, double segmentLength)
+        public void Start()
+        {
+            Thread processThread = new Thread(delegate()
+            {
+                string namedPipe = string.Format("namedp://{0}.ts", ProcessId);
+                this.EncodingOptions.OutputFile = namedPipe;
+                this.SegmentOptions.InputFile = namedPipe;
+
+                Thread t = new Thread(GenerateHlsStreamThread);
+                t.IsBackground = true;
+                t.Start();
+
+                Thread t2 = new Thread(SegmentHlsStreamThread);
+                t2.Priority = ThreadPriority.AboveNormal;
+                t2.IsBackground = true;
+                t2.Start();
+
+                t2.Join();
+            });
+
+            processThread.IsBackground = true;
+            processThread.Start();
+            processThread.Join();
+        }
+
+        private void GenerateHlsStream()
+        {
+            var options = EncodingProcess.Current.EncodingOptions;
+            InteropHelper.Transcode(options.ToStringArray());
+        }
+
+        private void SegmentHlsStream()
+        {
+            var options = EncodingProcess.Current.SegmentOptions;
+            InteropHelper.Segment(options.ToStringArray());
+        }
+
+        internal static void EncodingStatusUpdateCallback(string processId, int segmentNumber, double segmentLength)
         {
             if (!ProcessHistory.ContainsKey(processId))
                 return;
@@ -153,4 +206,6 @@ namespace HlsStreamComposer
             proc.AmountOfTimeEncodedAndSegmented += segmentLength;
         }
     }
+
+    delegate void EncodingStatusUpdateDelegate(string processId, int segmentNumber, double segmentLength);
 }

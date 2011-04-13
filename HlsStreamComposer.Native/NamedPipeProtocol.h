@@ -5,7 +5,7 @@ char* named_pipe_semaphore_name = NULL;
 struct NamedPipeProtocolContext
 {
 	HANDLE hPipe;
-	char* pipeName;
+	char pipeName[1024];
 	BOOL pipeOwner;
 	BOOL pipeConnected;
 };
@@ -36,10 +36,8 @@ int namedp_open(URLContext *h, const char *url, int flags)
 
 	char* cUrl = replace_str((char*)url, "namedp://", "\\\\.\\pipe\\");	
 	int strLen = strlen(cUrl);
-
-	ctx->pipeName = (char*)malloc(strLen);
+		
 	strcpy(ctx->pipeName, cUrl);
-
 	wchar_t* wUrl = (wchar_t*)malloc(sizeof(wchar_t) * (strLen + 1));
 
 	mbstowcs(wUrl, cUrl, strLen);
@@ -47,8 +45,17 @@ int namedp_open(URLContext *h, const char *url, int flags)
 
 	if(flags == URL_RDONLY){
 		printf("Connecting to pipe: '%s'\n", cUrl);
-		if(WaitNamedPipe(wUrl, 5000) == 0)
+		int errorCount = 0;
+
+retry_wait_named_pipe:
+		if(WaitNamedPipe(wUrl, NMPWAIT_USE_DEFAULT_WAIT) == 0)
 		{
+			if(GetLastError() != ERROR_SEM_TIMEOUT && ++errorCount < 5)
+			{		
+				Sleep(1000);
+				goto retry_wait_named_pipe;
+			}
+
 			printf("Error: Pipe '%s' connection timeout.\n", cUrl);
 			return -1;
 		}
@@ -194,10 +201,6 @@ int namedp_close(URLContext *h)
 		DisconnectNamedPipe(ctx->hPipe);
 
 	ret = CloseHandle(hPipe);
-	if(ctx->pipeName){
-		free(ctx->pipeName);		
-		ctx->pipeName = NULL;
-	}
 	
 	free(ctx);
 	h->priv_data = NULL;
