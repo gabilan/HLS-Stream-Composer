@@ -10,7 +10,31 @@
     <Page.Resources>
         <ObjectDataProvider x:Key="objProv"  ObjectType="{x:Type src:EncodingProcess}" MethodName="GetCurrent"/>
     </Page.Resources>
-    <Grid>
-        <TextBlock Text="{Binding Source={StaticResource objProv}, Path=InputPath}"/>
+    <Grid Margin="2,2,2,2">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20" />
+            <RowDefinition Height="20" />
+            <RowDefinition Height="20" />
+            <RowDefinition Height="20" />
+            <RowDefinition Height="20" />
+            <RowDefinition Height="20" />
+            <RowDefinition Height="20" />
+            <RowDefinition Height="20" />
+            <RowDefinition Height="20" />
+        </Grid.RowDefinitions>
+        
+        <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Content="Input path:" VerticalAlignment="Bottom"  />
+        <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" Text="{Binding Source={StaticResource objProv}, Path=InputPath}"/>
+
+        <Label Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Content="Output path:" VerticalAlignment="Bottom" />
+        <TextBlock Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="4" Text="{Binding Source={StaticResource objProv}, Path=OutputPath}"/>
+
+        <ProgressBar Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="2" Minimum="0" Maximum="1" Value="{Binding Source={StaticResource objProv}, Path=PercentageComplete}" />
     </Grid>
 </Page>

@@ -4,6 +4,8 @@ extern "C"{
 #include "libavformat/avformat.h"
 }
 
+typedef void (__stdcall *status_callback_delegate)(const char *processId, int index, double duration);
+
 struct config_info
 {
 	char input_filename[1024];
@@ -17,6 +19,7 @@ struct config_info
 	char playlist_file_location[1024];
 	char process_id[1024];
 	void* callback_pointer;	
+	status_callback_delegate status_callback;
 };
 
 struct playlist_update_context
@@ -25,6 +28,12 @@ struct playlist_update_context
 	char	old_filename[1024];
 	char	new_filename[1024];
 	char	playlist_entry[2048];
+	
+	//status updates
+	char*	process_id;
+	int		index;
+	double	duration;
+	status_callback_delegate status_callback;
 };
 
 
@@ -159,7 +168,10 @@ public:
 				__int64 pointer_val = 0;
 				pointer_val = _atoi64(argv[6]);
 				if(pointer_val)
+				{
 					config.callback_pointer = (void*)pointer_val;
+					config.status_callback = (status_callback_delegate)config.callback_pointer;
+				}
 			}
 
 			if(argc > 8)
@@ -311,11 +323,12 @@ public:
 			AVFrac old_video_pts;
 
 			double prev_segment_time = 0;
+			double segment_time = 0;
 			int decode_done;
 
 			do 
 			{
-				double segment_time = 0;
+				segment_time = 0;
 				AVPacket packet;
 
 				decode_done = av_read_frame(input_context, &packet);
@@ -397,7 +410,12 @@ public:
 					{
 						playlist_update_context* updateCtx = (playlist_update_context*)malloc(sizeof(playlist_update_context));
 						memset(updateCtx, 0, sizeof(playlist_update_context));
+						
 						updateCtx->ptr_this = this;
+						updateCtx->process_id = config.process_id;
+						updateCtx->index = output_index - 1;
+						updateCtx->duration = (segment_time - prev_segment_time);
+						updateCtx->status_callback = config.status_callback;
 
 						memcpy(updateCtx->old_filename, output_filename, 1024);
 						memcpy(updateCtx->new_filename, new_output_filename, 1024);
@@ -432,6 +450,10 @@ public:
 __free_av_packet:
 				av_free_packet(&packet);
 			} while (!decode_done);
+
+
+			if(config.status_callback)
+				config.status_callback(config.process_id, output_index - 1, max(0, segment_time - prev_segment_time));
 
 			av_write_trailer(output_context);		
 
@@ -480,6 +502,11 @@ DWORD __stdcall RenameFileAndUpdatePlaylist(LPVOID p)
 		remove(ctx->new_filename);
 		Sleep(100);
 	}
+
+	if(ctx->status_callback)
+		ctx->status_callback(ctx->process_id, ctx->index, ctx->duration);
+
+	free(ctx);
 
 	return 0;
 }

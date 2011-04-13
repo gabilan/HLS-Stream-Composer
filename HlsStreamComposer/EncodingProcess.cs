@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using System.Threading;
+using System.ComponentModel;
 
 namespace HlsStreamComposer
 {
-    public class EncodingProcess
+    public class EncodingProcess : INotifyPropertyChanged
     {
         static readonly Dictionary<string, EncodingProcess> ProcessHistory = new Dictionary<string, EncodingProcess>();
         public static EncodingProcess Current;
@@ -48,6 +49,7 @@ namespace HlsStreamComposer
         public SegmentationOptions SegmentOptions { get; set; }
         public int InputFileDurationInSeconds { get; set; }
         public double AmountOfTimeEncodedAndSegmented { get; set; }
+        public double PercentageComplete { get { return Math.Min(1, AmountOfTimeEncodedAndSegmented / InputFileDurationInSeconds); } set { } }
 
         public EncodingProcess()
         {
@@ -160,35 +162,62 @@ namespace HlsStreamComposer
             return true;
         }
 
+        Thread processThread;
         public void Start()
         {
-            Thread processThread = new Thread(delegate()
-            {
-                string namedPipe = string.Format("namedp://{0}.ts", ProcessId);
-                this.EncodingOptions.OutputFile = namedPipe;
-                this.SegmentOptions.InputFile = namedPipe;
+            processThread = new Thread(delegate()
+              {
+                  Thread t = null, t2 = null;
 
-                Thread t = new Thread(GenerateHlsStreamThread);
-                t.IsBackground = true;
-                t.Start();
+                  try
+                  {
+                      string namedPipe = string.Format("namedp://{0}.ts", ProcessId);
+                      this.EncodingOptions.OutputFile = namedPipe;
+                      this.SegmentOptions.InputFile = namedPipe;
 
-                Thread t2 = new Thread(SegmentHlsStreamThread);
-                t2.Priority = ThreadPriority.AboveNormal;
-                t2.IsBackground = true;
-                t2.Start();
+                      t = new Thread(GenerateHlsStreamThread);
+                      t.IsBackground = true;
+                      t.Start();
 
-                t2.Join();
-            });
+                      t2 = new Thread(SegmentHlsStreamThread);
+                      t2.Priority = ThreadPriority.AboveNormal;
+                      t2.IsBackground = true;
+                      t2.Start();
+                      t2.Join();
+                  }
+                  catch (ThreadAbortException)
+                  {
+                      if (t != null && t.ThreadState == ThreadState.Running)
+                          t.Abort();
+
+                      if (t2 != null && t2.ThreadState == ThreadState.Running)
+                          t2.Abort();
+                  }
+              });
 
             processThread.IsBackground = true;
             processThread.Start();
-            processThread.Join();
+        }
+
+        public void Stop()
+        {
+            if (processThread != null && processThread.ThreadState == ThreadState.Running)
+                processThread.Abort();
         }
 
         private void GenerateHlsStream()
         {
             var options = EncodingProcess.Current.EncodingOptions;
-            InteropHelper.Transcode(options.ToStringArray());
+
+            try
+            {
+                InteropHelper.StopTranscoder();
+                InteropHelper.Transcode(options.ToStringArray());
+            }
+            catch (ThreadAbortException)
+            {
+                InteropHelper.StopTranscoder();
+            }
         }
 
         private void SegmentHlsStream()
@@ -204,8 +233,21 @@ namespace HlsStreamComposer
 
             EncodingProcess proc = ProcessHistory[processId];
             proc.AmountOfTimeEncodedAndSegmented += segmentLength;
+
+            if (proc.PropertyChanged != null)
+            {
+                var e = new PropertyChangedEventArgs("PercentageComplete");
+                proc.PropertyChanged(proc, e);
+            }
         }
+
+        #region INotifyPropertyChanged Members
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        #endregion
     }
+
 
     delegate void EncodingStatusUpdateDelegate(string processId, int segmentNumber, double segmentLength);
 }

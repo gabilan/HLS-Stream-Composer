@@ -19,7 +19,7 @@ namespace HlsStreamComposer
     /// Interaction logic for ConfirmationPage.xaml
     /// </summary>
     public partial class ConfirmationPage : Page
-    {      
+    {
         public ConfirmationPage()
         {
             InitializeComponent();
@@ -28,19 +28,26 @@ namespace HlsStreamComposer
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             string errMsg = string.Empty;
+            bool startTranscoding = true;
+
             if (!EncodingProcess.Current.ReadyForEncode(ref errMsg))
             {
                 MessageBox.Show(errMsg, "Unable to begin encoding!", MessageBoxButton.OK, MessageBoxImage.Exclamation);
-                NavigationService.GoBack();
+                startTranscoding = false;
             }
             else if (MessageBox.Show("Are you sure that you'd like to begin encoding with these settings?", "Begin Encoding?", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No)
+                startTranscoding = false;
+
+            if (startTranscoding)
+            {
+                ObjectDataProvider objProv = this.Resources["objProv"] as ObjectDataProvider;
+                if (objProv != null)
+                    objProv.Refresh();
+
+                EncodingProcess.Current.Start();
+            }
+            else
                 NavigationService.GoBack();
-
-            ObjectDataProvider objProv = this.Resources["objProv"] as ObjectDataProvider;
-            if (objProv != null)
-                objProv.Refresh();
-
-            EncodingProcess.Current.Start();
         }
     }
 }
