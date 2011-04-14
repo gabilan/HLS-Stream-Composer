@@ -83,11 +83,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="VideoOptionsPage.xaml.cs">
+      <DependentUpon>VideoOptionsPage.xaml</DependentUpon>
+    </Compile>
     <Page Include="ConfirmationPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="EncodingOptionsPage.xaml">
+    <Page Include="AudioOptionsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -108,8 +111,8 @@
     <Compile Include="ConfirmationPage.xaml.cs">
       <DependentUpon>ConfirmationPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="EncodingOptionsPage.xaml.cs">
-      <DependentUpon>EncodingOptionsPage.xaml</DependentUpon>
+    <Compile Include="AudioOptionsPage.xaml.cs">
+      <DependentUpon>AudioOptionsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="EncodingProcess.cs" />
     <Compile Include="Extensions.cs" />
@@ -121,6 +124,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="VideoOptionsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="InteropHelper.cs" />

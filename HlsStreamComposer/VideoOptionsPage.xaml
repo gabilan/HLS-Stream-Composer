@@ -1,11 +1,12 @@
-﻿<Page x:Class="HlsStreamComposer.EncodingOptionsPage"
+﻿<Page x:Class="HlsStreamComposer.VideoOptionsPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       mc:Ignorable="d" 
       d:DesignHeight="200" d:DesignWidth="450"
-	Title="Encoding Options">
+	Title="VideoOptionsPage">
+
     <Grid Margin="5,5,5,5">
         <Grid.RowDefinitions>
             <RowDefinition Height="30" />
@@ -21,16 +22,10 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" FontSize="14" Content="Select encoding options" />
+        <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" FontSize="14" Content="Select video encoding options" />
 
         <Label Grid.Row="2" Grid.Column="0" Content="Video encoding preset:" VerticalAlignment="Center" />
-        <Label Grid.Row="3" Grid.Column="0" Content="Audio bit rate:" VerticalAlignment="Center" />
-        <Label Grid.Row="4" Grid.Column="0" Content="Audio sample rate:" VerticalAlignment="Center" />
-        <Label Grid.Row="5" Grid.Column="0" Content="Audio channels:" VerticalAlignment="Center" />
 
         <ComboBox Grid.Row="2" Grid.Column="1" Name="cbVideoPreset" Height="25" Margin="2,2,2,2" />
-        <ComboBox Grid.Row="3" Grid.Column="1" Name="cbAudioBitRate" Height="25" Margin="2,2,2,2" />
-        <ComboBox Grid.Row="4" Grid.Column="1" Name="cbAudioSampleRate" Height="25" Margin="2,2,2,2" />
-        <ComboBox Grid.Row="5" Grid.Column="1" Name="cbAudioChannels" Height="25" Margin="2,2,2,2" />
     </Grid>
 </Page>

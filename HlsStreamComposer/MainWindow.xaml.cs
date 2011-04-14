@@ -20,7 +20,8 @@ namespace HlsStreamComposer
     public partial class MainWindow : Window
     {
         FileSelectionPage fsPage = new FileSelectionPage();
-        EncodingOptionsPage eoPage = new EncodingOptionsPage();
+        VideoOptionsPage voPage = new VideoOptionsPage();
+        AudioOptionsPage aoPage = new AudioOptionsPage();
         ConfirmationPage cPage = new ConfirmationPage();
 
         public MainWindow()
@@ -37,10 +38,12 @@ namespace HlsStreamComposer
             if (saveable != null)
                 saveable.Save();
 
-            if (frameContent.Content == eoPage)
+            if (frameContent.Content == voPage)
                 frameContent.Navigate(fsPage);
+            else if (frameContent.Content == aoPage)
+                frameContent.Navigate(voPage);
             else if (frameContent.Content == cPage)
-                frameContent.Navigate(eoPage);
+                frameContent.Navigate(aoPage);
         }
 
         private void btnNext_Click(object sender, RoutedEventArgs e)
@@ -50,8 +53,10 @@ namespace HlsStreamComposer
                 saveable.Save();
 
             if (frameContent.Content == fsPage)
-                frameContent.Navigate(eoPage);
-            else if (frameContent.Content == eoPage)
+                frameContent.Navigate(voPage);
+            else if (frameContent.Content == voPage)
+                frameContent.Navigate(aoPage);
+            else if (frameContent.Content == aoPage)
                 frameContent.Navigate(cPage);
         }
 
