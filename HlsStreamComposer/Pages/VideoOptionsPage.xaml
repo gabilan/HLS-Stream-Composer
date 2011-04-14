@@ -25,7 +25,11 @@
         <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" FontSize="14" Content="Select video encoding options" />
 
         <Label Grid.Row="2" Grid.Column="0" Content="Video encoding preset:" VerticalAlignment="Center" />
+        <Label Grid.Row="3" Grid.Column="0" Content="Video encoding bitrate:" VerticalAlignment="Center" />
+        <Label Grid.Row="4" Grid.Column="0" Content="Video quality rate (0-60):" VerticalAlignment="Center" />
 
         <ComboBox Grid.Row="2" Grid.Column="1" Name="cbVideoPreset" Height="25" Margin="2,2,2,2" />
+        <TextBox Grid.Row="3" Grid.Column="1" Name="tbVideoBitrate" Height="25" Margin="2,2,2,2" Text="3M" />
+        <TextBox Grid.Row="4" Grid.Column="1" Name="tbVideoQualityRate" Height="25" Margin="2,2,2,2" />
     </Grid>
 </Page>

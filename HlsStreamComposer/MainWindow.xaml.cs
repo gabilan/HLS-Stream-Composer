@@ -22,6 +22,7 @@ namespace HlsStreamComposer
         FileSelectionPage fsPage = new FileSelectionPage();
         VideoOptionsPage voPage = new VideoOptionsPage();
         AudioOptionsPage aoPage = new AudioOptionsPage();
+        PlaylistOptionsPage poPage = new PlaylistOptionsPage();
         ConfirmationPage cPage = new ConfirmationPage();
 
         public MainWindow()
@@ -42,8 +43,10 @@ namespace HlsStreamComposer
                 frameContent.Navigate(fsPage);
             else if (frameContent.Content == aoPage)
                 frameContent.Navigate(voPage);
-            else if (frameContent.Content == cPage)
+            else if (frameContent.Content == poPage)
                 frameContent.Navigate(aoPage);
+            else if (frameContent.Content == cPage)
+                frameContent.Navigate(poPage);
         }
 
         private void btnNext_Click(object sender, RoutedEventArgs e)
@@ -57,6 +60,8 @@ namespace HlsStreamComposer
             else if (frameContent.Content == voPage)
                 frameContent.Navigate(aoPage);
             else if (frameContent.Content == aoPage)
+                frameContent.Navigate(poPage);
+            else if (frameContent.Content == poPage)
                 frameContent.Navigate(cPage);
         }
 

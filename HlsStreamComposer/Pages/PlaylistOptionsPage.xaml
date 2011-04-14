@@ -1,0 +1,33 @@
+﻿<Page x:Class="HlsStreamComposer.PlaylistOptionsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      mc:Ignorable="d" 
+      d:DesignHeight="200" d:DesignWidth="450"
+	Title="PlaylistOptionsPage">
+
+    <Grid Margin="5,5,5,5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30" />
+            <RowDefinition Height="25" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="30" />
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="130" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" FontSize="14" Content="Select playlist options" />
+
+        <Label Grid.Row="2" Grid.Column="0" Content="Playlist delivery url:" VerticalAlignment="Center" />
+        <Label Grid.Row="3" Grid.Column="0" Content="Segment length(in sec):" VerticalAlignment="Center" />
+
+        <TextBox Grid.Row="2" Grid.Column="1" Name="tbPlaylistUrl" Height="25" Margin="2,2,2,2" />
+        <TextBox Grid.Row="3" Grid.Column="1" Name="tbSegmentDuration" Height="25" Margin="2,2,2,2" Text="10" />
+    </Grid>
+</Page>

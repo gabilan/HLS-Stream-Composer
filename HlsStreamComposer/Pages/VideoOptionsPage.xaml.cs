@@ -91,7 +91,36 @@ namespace HlsStreamComposer
 
         public void Save()
         {
-            EncodingProcess.Current.EncodingOptions.VideoPreset = cbVideoPreset.SelectedItem != null ? ((ComboBoxItem)cbVideoPreset.SelectedItem).Tag as string : "ultrafast";
+            var options = EncodingProcess.Current.EncodingOptions;
+
+            options.VideoPreset = cbVideoPreset.SelectedItem != null ? ((ComboBoxItem)cbVideoPreset.SelectedItem).Tag as string : "ultrafast";
+            if (!string.IsNullOrEmpty(tbVideoBitrate.Text))
+            {
+                if (!tbVideoBitrate.Text.EndsWith("m", StringComparison.CurrentCultureIgnoreCase) && !tbVideoBitrate.Text.EndsWith("k", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    MessageBox.Show("Video bitrate must end in 'M' for Mbps or 'k' for kbps.", "Invalid video bitrate setting", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                    options.VideoBitrate = "3M";
+                }
+                else if (!IsValidBitrate(tbVideoBitrate.Text))
+                {
+                    MessageBox.Show("The specified video bitrate is not valid.", "Invalid video bitrate setting", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                    options.VideoBitrate = "3M";
+                }
+                else
+                    options.VideoBitrate = tbVideoBitrate.Text;
+            }
+        }
+
+        private bool IsValidBitrate(string p)
+        {
+            if (string.IsNullOrEmpty(p))
+                return false;
+
+            if (p.Length < 2)
+                return false;
+
+            int i = 0;
+            return int.TryParse(p.Substring(0, p.Length - 1), out i);
         }
     }
 }

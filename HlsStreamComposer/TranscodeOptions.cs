@@ -59,6 +59,7 @@ namespace HlsStreamComposer
         public int AudioChannels { get; set; }
         public string VideoCodec { get; set; }
         public string VideoBitrate { get; set; }
+        public byte VideoQualityControl { get; set; }
         public string VideoPreset { get; set; }
         public int VideoWidth { get; set; }
         public int VideoHeight { get; set; }
@@ -93,6 +94,7 @@ namespace HlsStreamComposer
             this.AudioChannels = options.AudioChannels;
             this.VideoCodec = options.VideoCodec;
             this.VideoBitrate = options.VideoBitrate;
+            this.VideoQualityControl = options.VideoQualityControl;
             this.VideoPreset = options.VideoPreset;
             this.VideoWidth = options.VideoWidth;
             this.VideoHeight = options.VideoHeight;
@@ -139,6 +141,9 @@ namespace HlsStreamComposer
 
                 if (!string.IsNullOrEmpty(VideoBitrate))
                     parameters.Add(string.Format("-b {0}", VideoBitrate));
+
+                if (VideoQualityControl > 0)
+                    parameters.Add(string.Format("-crf {0}", VideoQualityControl));
 
                 if (!string.IsNullOrEmpty(VideoPreset))
                     parameters.Add(string.Format("-vpre {0}", VideoPreset));
@@ -231,6 +236,12 @@ namespace HlsStreamComposer
                 {
                     parameters.Add("-b");
                     parameters.Add(VideoBitrate);
+                }
+
+                if (VideoQualityControl > 0)
+                {
+                    parameters.Add("-crf");
+                    parameters.Add(VideoQualityControl.ToString());
                 }
 
                 if (!string.IsNullOrEmpty(VideoPreset))

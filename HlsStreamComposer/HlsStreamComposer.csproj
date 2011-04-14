@@ -83,18 +83,21 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="VideoOptionsPage.xaml.cs">
+    <Compile Include="Pages\PlaylistOptionsPage.xaml.cs">
+      <DependentUpon>PlaylistOptionsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\VideoOptionsPage.xaml.cs">
       <DependentUpon>VideoOptionsPage.xaml</DependentUpon>
     </Compile>
-    <Page Include="ConfirmationPage.xaml">
+    <Page Include="Pages\ConfirmationPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="AudioOptionsPage.xaml">
+    <Page Include="Pages\AudioOptionsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="FileSelectionPage.xaml">
+    <Page Include="Pages\FileSelectionPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -108,15 +111,15 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ConfirmationPage.xaml.cs">
+    <Compile Include="Pages\ConfirmationPage.xaml.cs">
       <DependentUpon>ConfirmationPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="AudioOptionsPage.xaml.cs">
+    <Compile Include="Pages\AudioOptionsPage.xaml.cs">
       <DependentUpon>AudioOptionsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="EncodingProcess.cs" />
     <Compile Include="Extensions.cs" />
-    <Compile Include="FileSelectionPage.xaml.cs">
+    <Compile Include="Pages\FileSelectionPage.xaml.cs">
       <DependentUpon>FileSelectionPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="ISaveablePage.cs" />
@@ -124,7 +127,11 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="VideoOptionsPage.xaml">
+    <Page Include="Pages\PlaylistOptionsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\VideoOptionsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
