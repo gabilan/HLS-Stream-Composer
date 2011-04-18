@@ -49,5 +49,14 @@ namespace HlsStreamComposer
             else
                 NavigationService.GoBack();
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            if (MessageBox.Show("Are you sure that you'd like to cancel the current encoding process?", "Cancel Encoding?", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            {
+                EncodingProcess.Current.Stop();
+                NavigationService.GoBack();
+            }
+        }
     }
 }

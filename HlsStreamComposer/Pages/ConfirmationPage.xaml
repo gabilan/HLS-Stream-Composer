@@ -5,7 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:src="clr-namespace:HlsStreamComposer"
       mc:Ignorable="d" 
-      d:DesignHeight="200" d:DesignWidth="450"
+      d:DesignHeight="210" d:DesignWidth="450"
 	Title="Confirmation Page" Loaded="Page_Loaded">
     <Page.Resources>
         <ObjectDataProvider x:Key="objProv"  ObjectType="{x:Type src:EncodingProcess}" MethodName="GetCurrent"/>
@@ -27,6 +27,7 @@
             <RowDefinition Height="20" />
             <RowDefinition Height="20" />
             <RowDefinition Height="20" />
+            <RowDefinition Height="20" />
         </Grid.RowDefinitions>
         
         <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Content="Input path:" VerticalAlignment="Bottom"  />
@@ -36,5 +37,6 @@
         <TextBlock Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="4" Text="{Binding Source={StaticResource objProv}, Path=OutputPath}"/>
 
         <ProgressBar Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="2" Minimum="0" Maximum="1" Value="{Binding Source={StaticResource objProv}, Path=PercentageComplete}" />
+        <Button Grid.Row="9" Grid.Column="1" Grid.ColumnSpan="2" Width="150" Content="Cancel Encoding Process" IsEnabled="{Binding Source={StaticResource objProv}, Path=CanCancel}" Click="Button_Click" />
     </Grid>
 </Page>

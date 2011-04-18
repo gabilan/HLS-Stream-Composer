@@ -50,6 +50,7 @@ namespace HlsStreamComposer
         public int InputFileDurationInSeconds { get; set; }
         public double AmountOfTimeEncodedAndSegmented { get; set; }
         public double PercentageComplete { get { return Math.Min(1, AmountOfTimeEncodedAndSegmented / InputFileDurationInSeconds); } set { } }
+        public bool CanCancel { get { return PercentageComplete < 1; } set { } }
 
         public EncodingProcess()
         {
@@ -165,6 +166,13 @@ namespace HlsStreamComposer
         Thread processThread;
         public void Start()
         {
+            AmountOfTimeEncodedAndSegmented = 0;
+            if (PropertyChanged != null)
+            {
+                var e = new PropertyChangedEventArgs("PercentageComplete");
+                PropertyChanged(this, e);
+            }
+
             processThread = new Thread(delegate()
               {
                   Thread t = null, t2 = null;
@@ -187,11 +195,22 @@ namespace HlsStreamComposer
                   }
                   catch (ThreadAbortException)
                   {
-                      if (t != null && t.ThreadState == ThreadState.Running)
-                          t.Abort();
+                      try
+                      {
+                          InteropHelper.StopTranscoder();
+                      }
+                      catch { }
 
-                      if (t2 != null && t2.ThreadState == ThreadState.Running)
-                          t2.Abort();
+                      if (t != null)
+                          try { t.Abort(); }
+                          catch { }
+
+                      if (t2 != null)
+                          try { t2.Abort(); }
+                          catch { }
+
+                      t = null;
+                      t2 = null;
                   }
               });
 
@@ -201,8 +220,18 @@ namespace HlsStreamComposer
 
         public void Stop()
         {
-            if (processThread != null && processThread.ThreadState == ThreadState.Running)
-                processThread.Abort();
+            if (processThread != null)
+            {
+                try
+                {
+                    processThread.Abort();
+                }
+                catch { }
+                finally
+                {
+                    processThread = null;
+                }
+            }
         }
 
         private void GenerateHlsStream()
