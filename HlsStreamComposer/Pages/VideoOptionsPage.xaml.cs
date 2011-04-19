@@ -24,7 +24,7 @@ namespace HlsStreamComposer
         {
             InitializeComponent();
 
-            foreach (var file in Directory.GetFiles(@"Lib\presets", "*.ffpreset"))
+            foreach (var file in Directory.GetFiles(@"presets", "*.ffpreset"))
             {
                 if (!file.Contains("libx264-"))
                     continue;

@@ -158,106 +158,101 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="Lib\presets\libx264-baseline.ffpreset">
+    <Content Include="presets\libx264-baseline.ffpreset">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Lib\presets\libx264-fast.ffpreset">
+    </Content>
+    <Content Include="presets\libx264-fast.ffpreset">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Lib\presets\libx264-faster.ffpreset">
+    </Content>
+    <Content Include="presets\libx264-faster.ffpreset">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Lib\presets\libx264-faster_firstpass.ffpreset">
+    </Content>
+    <Content Include="presets\libx264-faster_firstpass.ffpreset">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Lib\presets\libx264-fast_firstpass.ffpreset">
+    </Content>
+    <Content Include="presets\libx264-fast_firstpass.ffpreset">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Lib\presets\libx264-ipod320.ffpreset">
+    </Content>
+    <Content Include="presets\libx264-ipod320.ffpreset">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Lib\presets\libx264-ipod640.ffpreset">
+    </Content>
+    <Content Include="presets\libx264-ipod640.ffpreset">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Lib\presets\libx264-lossless_fast.ffpreset">
+    </Content>
+    <Content Include="presets\libx264-lossless_fast.ffpreset">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Lib\presets\libx264-lossless_max.ffpreset">
+    </Content>
+    <Content Include="presets\libx264-lossless_max.ffpreset">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Lib\presets\libx264-lossless_medium.ffpreset">
+    </Content>
+    <Content Include="presets\libx264-lossless_medium.ffpreset">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Lib\presets\libx264-lossless_slow.ffpreset">
+    </Content>
+    <Content Include="presets\libx264-lossless_slow.ffpreset">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Lib\presets\libx264-lossless_slower.ffpreset">
+    </Content>
+    <Content Include="presets\libx264-lossless_slower.ffpreset">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Lib\presets\libx264-lossless_ultrafast.ffpreset">
+    </Content>
+    <Content Include="presets\libx264-lossless_ultrafast.ffpreset">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Lib\presets\libx264-main.ffpreset">
+    </Content>
+    <Content Include="presets\libx264-main.ffpreset">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Lib\presets\libx264-medium.ffpreset">
+    </Content>
+    <Content Include="presets\libx264-medium.ffpreset">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Lib\presets\libx264-medium_firstpass.ffpreset">
+    </Content>
+    <Content Include="presets\libx264-medium_firstpass.ffpreset">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Lib\presets\libx264-placebo.ffpreset">
+    </Content>
+    <Content Include="presets\libx264-placebo.ffpreset">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Lib\presets\libx264-placebo_firstpass.ffpreset">
+    </Content>
+    <Content Include="presets\libx264-placebo_firstpass.ffpreset">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Lib\presets\libx264-slow.ffpreset">
+    </Content>
+    <Content Include="presets\libx264-slow.ffpreset">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Lib\presets\libx264-slower.ffpreset">
+    </Content>
+    <Content Include="presets\libx264-slower.ffpreset">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Lib\presets\libx264-slower_firstpass.ffpreset">
+    </Content>
+    <Content Include="presets\libx264-slower_firstpass.ffpreset">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Lib\presets\libx264-slow_firstpass.ffpreset">
+    </Content>
+    <Content Include="presets\libx264-slow_firstpass.ffpreset">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Lib\presets\libx264-superfast.ffpreset">
+    </Content>
+    <Content Include="presets\libx264-superfast.ffpreset">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Lib\presets\libx264-superfast_firstpass.ffpreset">
+    </Content>
+    <Content Include="presets\libx264-superfast_firstpass.ffpreset">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Lib\presets\libx264-ultrafast.ffpreset">
+    </Content>
+    <Content Include="presets\libx264-ultrafast.ffpreset">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Lib\presets\libx264-ultrafast_firstpass.ffpreset">
+    </Content>
+    <Content Include="presets\libx264-ultrafast_firstpass.ffpreset">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Lib\presets\libx264-veryfast.ffpreset">
+    </Content>
+    <Content Include="presets\libx264-veryfast.ffpreset">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Lib\presets\libx264-veryfast_firstpass.ffpreset">
+    </Content>
+    <Content Include="presets\libx264-veryfast_firstpass.ffpreset">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Lib\presets\libx264-veryslow.ffpreset">
+    </Content>
+    <Content Include="presets\libx264-veryslow.ffpreset">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Lib\presets\libx264-veryslow_firstpass.ffpreset">
+    </Content>
+    <Content Include="presets\libx264-veryslow_firstpass.ffpreset">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    </Content>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Lib\HlsStreamComposer.Native.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -275,6 +270,65 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="avcodec-52.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="avdevice.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="avfilter-1.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="avformat-52.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="avutil-50.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="HlsStreamComposer.Native.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="libmp3lame-0.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="libogg-0.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="libtheora-0.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="libtheoradec-1.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="libtheoraenc-1.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="libvorbis-0.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="libvorbisenc-2.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="libvorbisfile-3.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="libx264-114.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="postproc.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="pthreadGC2.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="swscale-0.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="xvidcore.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

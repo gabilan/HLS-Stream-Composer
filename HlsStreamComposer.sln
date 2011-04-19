@@ -5,6 +5,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HlsStreamComposer.Native", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HlsStreamComposer", "HlsStreamComposer\HlsStreamComposer.csproj", "{6116FFB2-A5E6-471E-A4EA-7A27A3008BED}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "HlsStreamComposer.Setup", "HlsStreamComposer.Setup\HlsStreamComposer.Setup.vdproj", "{56FF778E-CC59-487B-B168-F097D424EC32}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,6 +37,12 @@ Global
 		{6116FFB2-A5E6-471E-A4EA-7A27A3008BED}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{6116FFB2-A5E6-471E-A4EA-7A27A3008BED}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{6116FFB2-A5E6-471E-A4EA-7A27A3008BED}.Release|Win32.ActiveCfg = Release|Any CPU
+		{56FF778E-CC59-487B-B168-F097D424EC32}.Debug|Any CPU.ActiveCfg = Debug
+		{56FF778E-CC59-487B-B168-F097D424EC32}.Debug|Mixed Platforms.ActiveCfg = Debug
+		{56FF778E-CC59-487B-B168-F097D424EC32}.Debug|Win32.ActiveCfg = Debug
+		{56FF778E-CC59-487B-B168-F097D424EC32}.Release|Any CPU.ActiveCfg = Release
+		{56FF778E-CC59-487B-B168-F097D424EC32}.Release|Mixed Platforms.ActiveCfg = Release
+		{56FF778E-CC59-487B-B168-F097D424EC32}.Release|Win32.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

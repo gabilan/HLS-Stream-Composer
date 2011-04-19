@@ -63,7 +63,7 @@
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
     </ClCompile>
     <Link>
-      <OutputFile>..\HlsStreamComposer\Lib\$(ProjectName).dll</OutputFile>
+      <OutputFile>..\HlsStreamComposer\$(ProjectName).dll</OutputFile>
       <AdditionalLibraryDirectories>..\ffmpeg\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
@@ -83,7 +83,7 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
-      <OutputFile>..\HlsStreamComposer\Lib\$(ProjectName).dll</OutputFile>
+      <OutputFile>..\HlsStreamComposer\$(ProjectName).dll</OutputFile>
       <AdditionalLibraryDirectories>..\ffmpeg\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>

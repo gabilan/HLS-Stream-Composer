@@ -10,23 +10,23 @@ namespace HlsStreamComposer
 {
     class InteropHelper
     {
-        [DllImport(@"Lib\HlsStreamComposer.Native.dll",
+        [DllImport(@"HlsStreamComposer.Native.dll",
             EntryPoint = "Initialize", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         static extern int InitializeHelper(string errorPath, string statusPath);
 
-        [DllImport(@"Lib\HlsStreamComposer.Native.dll",
+        [DllImport(@"HlsStreamComposer.Native.dll",
             EntryPoint = "RunTranscoder", CallingConvention = CallingConvention.Cdecl)]
         static extern int RunTranscoder(IntPtr message, Int32 length);
 
-        [DllImport(@"Lib\HlsStreamComposer.Native.dll",
+        [DllImport(@"HlsStreamComposer.Native.dll",
            EntryPoint = "RunSegmenter", CallingConvention = CallingConvention.Cdecl)]
         static extern int RunSegmenter(IntPtr message, Int32 length);
 
-        [DllImport(@"Lib\HlsStreamComposer.Native.dll",
+        [DllImport(@"HlsStreamComposer.Native.dll",
            EntryPoint = "RunProbe", CallingConvention = CallingConvention.Cdecl)]
         static extern int RunProbe(IntPtr message, Int32 length);
 
-        [DllImport(@"Lib\HlsStreamComposer.Native.dll",
+        [DllImport(@"HlsStreamComposer.Native.dll",
           EntryPoint = "StopTranscoder", CallingConvention = CallingConvention.Cdecl)]
         public static extern int StopTranscoder();
 
@@ -37,7 +37,7 @@ namespace HlsStreamComposer
             try
             {
                 string dirPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-                string envVariable = Path.Combine(dirPath, "Lib\\presets");
+                string envVariable = Path.Combine(dirPath, "presets");
                 Environment.SetEnvironmentVariable("FFMPEG_DATADIR", envVariable);
 
                 int ret = InitializeHelper(
